@@ -17,19 +17,16 @@ def preprocessing(train_path,test_path):
                                                         test_size=0.2, 
                                                         random_state=42
                                                     )
-    target = ['ID', 'img_path', 'mask_path', '수술연월일','나이', '진단명', '암의 위치', '암의 개수', '암의 장경', 'NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3','DCIS_or_LCIS_여부', 'DCIS_or_LCIS_type', 'T_category', 'ER','PR', 'KI-67_LI_percent', 'HER2','BRCA_mutation']
+    target = ['ID', 'img_path', 'mask_path', '수술연월일','나이', '진단명', '암의 위치', '암의 개수', '암의 장경', 'NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3','DCIS_or_LCIS_여부', 'T_category', 'ER','PR', 'KI-67_LI_percent', 'HER2','BRCA_mutation']
     
     target_test = ['ID', 'img_path', '수술연월일','나이', '진단명', '암의 위치', '암의 개수',
     '암의 장경', 'NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3',
-    'DCIS_or_LCIS_여부','DCIS_or_LCIS_type', 'T_category', 'ER','PR', 'KI-67_LI_percent', 'HER2','BRCA_mutation']
+    'DCIS_or_LCIS_여부', 'T_category', 'ER','PR', 'KI-67_LI_percent', 'HER2','BRCA_mutation']
     
     train_df = train_df[target]
     val_df = val_df[target] 
     test_df = test_df[target_test] 
     
-    train_df['DCIS_or_LCIS_type'].fillna(0, inplace=True)
-    val_df['DCIS_or_LCIS_type'].fillna(0, inplace=True)
-    test_df['DCIS_or_LCIS_type'].fillna(0, inplace=True)
     
     numeric_cols = ['나이', '암의 장경', 'KI-67_LI_percent', '암의 개수','NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3']
     ignore_cols = ['ID', 'img_path', 'mask_path', '수술연월일', 'N_category']
