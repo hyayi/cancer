@@ -28,19 +28,19 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-seed_everything(42)
+seed_everything(41)
 
 def inference(config):
 
     _, _, test_df, _, _ = preprocessing(config.train_path, config.test_path)
 
-    _,test_transforms =  get_transforms(config.img_size)
+    _,test_transforms =  get_transforms(h =config.img_h, w=config.img_w)
 
     test_dataset = CustomDataset(test_df, None, test_transforms)
     
     test_loader = DataLoader(test_dataset, batch_size=config.batch_size, shuffle=False, num_workers=config.num_workers,pin_memory=config.pin_memory)
 
-    model = MRSClassfication.load_from_checkpoint(config.weight_path, learning_rate = config.learning_rate)
+    model = MRSClassfication.load_from_checkpoint(config.weight_path, learning_rate = config.learning_rate, model_name=config.model_name)
     model.to(config.device)
     model.eval()
     preds = []
@@ -55,7 +55,7 @@ def inference(config):
             
     test_df['N_category'] = preds
     submit = test_df[['ID','N_category']]
-    submit.to_csv(f'./{config.name}_submit.csv', index=False)
+    submit.to_csv(f'{config.save_path}/{config.model_name}_submit.csv', index=False)
     
 if __name__=="__main__" :
     print('start')
@@ -64,10 +64,12 @@ if __name__=="__main__" :
     parser.add_argument("--train_path", type=str, default='./train_re.csv')
     parser.add_argument("--test_path", type=str, default='./test_re.csv')
     parser.add_argument("--weight_path", type=str, default='eb7-epoch=07-val_f1=0.77.ckpt')
-    parser.add_argument("--name", type=str, default='eb7')
+    parser.add_argument("--model_name", type=str, default='eb7')
+    parser.add_argument("--save_path", type=str, default='./')
     
+    parser.add_argument("--img_h", type=str, default=1024)
+    parser.add_argument("--img_w", type=str, default=2048)
     
-    parser.add_argument("--img_size", type=str, default=512)
     parser.add_argument("--batch_size",type=int, default=4)
     parser.add_argument("--num_workers",type=int, default=4)
     parser.add_argument("--pin_memory",type=bool, default=False)
