@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch 
 
 class ImgFeatureExtractor(nn.Module):
-    def __init__(self):
+    def __init__(self,model_name):
         super(ImgFeatureExtractor, self).__init__()
-        self.backbone = models.resnet50(pretrained=True)
+        self.backbone = getter(models ,model_name)(pretrained=True)
         self.embedding  = nn.Linear(1000,512)
         
     def forward(self, x):
@@ -35,9 +35,9 @@ class TabularFeatureExtractor(nn.Module):
     
 
 class ClassificationModel(nn.Module):
-    def __init__(self):
+    def __init__(self,model_name):
         super(ClassificationModel, self).__init__()
-        self.img_feature_extractor = ImgFeatureExtractor()
+        self.img_feature_extractor = ImgFeatureExtractor(model_name)
         self.tabular_feature_extractor = TabularFeatureExtractor()
         self.classifier = nn.Sequential(
            nn.LeakyReLU(),
