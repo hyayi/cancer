@@ -17,7 +17,7 @@ class TabularFeatureExtractor(nn.Module):
     def __init__(self):
         super(TabularFeatureExtractor, self).__init__()
         self.embedding = nn.Sequential(
-            nn.Linear(in_features=18, out_features=128),
+            nn.Linear(in_features=17, out_features=128),
             nn.BatchNorm1d(128),
             nn.LeakyReLU(),
             nn.Linear(in_features=128, out_features=256),
