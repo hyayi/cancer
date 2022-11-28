@@ -8,7 +8,7 @@ from schduler import CosineAnnealingWarmUpRestarts
 
 class MRSClassfication(pl.LightningModule):
 
-    def __init__(self,learning_rate=1e-4,model_name):
+    def __init__(self,model_name,learning_rate=1e-4):
         super().__init__()
         self.learning_rate = learning_rate
         self.model = ClassificationModel(model_name)
