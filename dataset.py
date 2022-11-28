@@ -9,7 +9,7 @@ class CustomDataset(Dataset):
         self.labels = labels
 
     def __getitem__(self, index):
-        img_path = self.medical_df['img_path'].iloc[index]
+        img_path = "/home/lab/inseo/cancer/data"+self.medical_df['img_path'].iloc[index][1:]
         image = cv2.imread(img_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
