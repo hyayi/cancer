@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch 
 
 class ImgFeatureExtractor(nn.Module):
-    def __init__(self,model_name,weights):
+    def __init__(self,model_name):
         super(ImgFeatureExtractor, self).__init__()
         self.backbone = getattr(models ,model_name)(weights ='DEFAULT')
         self.embedding  = nn.Linear(1000,512)
