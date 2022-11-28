@@ -15,7 +15,7 @@ def preprocessing(train_path,test_path):
                                                         train_df.drop(columns=['N_category']), 
                                                         train_df['N_category'], 
                                                         test_size=0.2, 
-                                                        random_state=42
+                                                        random_state=41
                                                     )
     target = ['ID', 'img_path', 'mask_path', '수술연월일','나이', '진단명', '암의 위치', '암의 개수', '암의 장경', 'NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3','DCIS_or_LCIS_여부', 'T_category', 'ER','PR', 'KI-67_LI_percent', 'HER2','BRCA_mutation']
     
