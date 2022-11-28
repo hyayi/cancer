@@ -43,9 +43,9 @@ def train(config):
     
     val_loader = DataLoader(val_dataset, batch_size=config.batch_size, shuffle=False, num_workers=config.num_workers,pin_memory=config.pin_memory)
 
-    model = MRSClassfication(learning_rate = config.learning_rate)
+    model = MRSClassfication(learning_rate = config.learning_rate. model_name = config.model_name)
     
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{config.weight_path}/", save_top_k=1, monitor="val_f1",filename=f'{config.name}'+'-{epoch:02d}-{val_f1:.2f}',mode='max')
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{config.weight_path}/", save_top_k=1, monitor="val_f1",filename=f'{config.model_name}'+'-{epoch:02d}-{val_f1:.3f}',mode='max')
     
     callbacks = [checkpoint_callback]
     
@@ -67,7 +67,7 @@ if __name__=="__main__" :
     parser.add_argument("--test_path", type=str, default='./test_re.csv')
     parser.add_argument("--weight_path", type=str, default='./')
     parser.add_argument("--log_path", type=str, default='./')
-    parser.add_argument("--name", type=str, default='res50')
+    parser.add_argument("--model_name", type=str, default='regnet_y_16gf')
     
     
     parser.add_argument("--img_h", type=str, default=1024)
