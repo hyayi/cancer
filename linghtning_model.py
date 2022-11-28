@@ -8,10 +8,10 @@ from schduler import CosineAnnealingWarmUpRestarts
 
 class MRSClassfication(pl.LightningModule):
 
-    def __init__(self,learning_rate=1e-4):
+    def __init__(self,learning_rate=1e-4,model_name):
         super().__init__()
         self.learning_rate = learning_rate
-        self.model = ClassificationModel()
+        self.model = ClassificationModel(model_name)
         self.loss = nn.CrossEntropyLoss()
 
     def forward(self, img,tabular):
