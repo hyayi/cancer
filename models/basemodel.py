@@ -5,7 +5,7 @@ import torch
 class ImgFeatureExtractor(nn.Module):
     def __init__(self,model_name):
         super(ImgFeatureExtractor, self).__init__()
-        self.backbone = getter(models ,model_name)(pretrained=True)
+        self.backbone = getattr(models ,model_name)(pretrained=True)
         self.embedding  = nn.Linear(1000,512)
         
     def forward(self, x):
