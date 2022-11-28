@@ -27,7 +27,7 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-seed_everything(42)
+seed_everything(41)
 
 def train(config):
 
