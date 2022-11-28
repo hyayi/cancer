@@ -33,8 +33,8 @@ def train(config):
 
     train_df, val_df, test_df, train_labels, val_labels = preprocessing(config.train_path, config.test_path)
 
-    
-    train_transforms,test_transforms =  get_transforms(config.img_size)
+    img_size = (config.img_h,config.img_w)
+    train_transforms,test_transforms =  get_transforms(img_size)
     train_dataset = CustomDataset(train_df, train_labels.values, train_transforms)
     
     train_loader = DataLoader(train_dataset, batch_size = config.batch_size, shuffle=True, num_workers=config.num_workers,pin_memory=config.pin_memory)
@@ -70,7 +70,8 @@ if __name__=="__main__" :
     parser.add_argument("--name", type=str, default='res50')
     
     
-    parser.add_argument("--img_size", type=str, default=512)
+    parser.add_argument("--img_h", type=str, default=2048)
+    parser.add_argument("--img_w", type=str, default=1024)
     parser.add_argument("--batch_size",type=int, default=4)
     parser.add_argument("--num_workers",type=int, default=4)
     parser.add_argument("--pin_memory",type=bool, default=False)
