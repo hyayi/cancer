@@ -1,0 +1,13 @@
+backbone_name : "ResNet50"
+backbone_params :
+  pretrained : True
+
+
+aggregator_name : "AttentionAggregator"
+aggregator_params :
+  inner_feature_size : 128 
+  output_size : 256
+
+classifyr_name : "BaseClassify"
+classify_params :
+    num_classes : 2
