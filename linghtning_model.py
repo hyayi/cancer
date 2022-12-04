@@ -5,6 +5,7 @@ import torch
 from models.basemodel import ClassificationModel
 from torchmetrics.functional.classification import multiclass_f1_score
 from schduler import CosineAnnealingWarmUpRestarts
+from torch import einsum
 
 class MRSClassfication(pl.LightningModule):
 
@@ -13,15 +14,20 @@ class MRSClassfication(pl.LightningModule):
         self.learning_rate = learning_rate
         self.model = ClassificationModel(model_name)
         self.loss = nn.CrossEntropyLoss()
+        self.temperature = nn.Parameter(torch.Tensor([1.]))
 
     def forward(self, img,tabular):
         return self.model(img,tabular)
 
     def training_step(self, batch, batch_idx):
         img, tabular, label= batch
-        pred = self(img, tabular)
+        pred,img_em,tabular_em = self(img, tabular)
         
-        loss = self.loss(pred, label)
+        sim = einsum('i d, j d -> i j', tabular_em, img_em)
+        sim = sim * self.temperature.exp()
+        contrastive_labels = torch.arange(img.shape[0]).to(pred)
+        contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
+        loss = self.loss(pred, label) + contrastive_loss
         
         self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         output = {'loss':loss,'pred':pred,'label':label}
@@ -38,9 +44,13 @@ class MRSClassfication(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         img, tabular, label= batch
-        pred = self(img, tabular)
+        pred,img_em,tabular_em = self(img, tabular)
         
-        loss = self.loss(pred, label)
+        sim = einsum('i d, j d -> i j', tabular_em, img_em)
+        sim = sim * self.temperature.exp()
+        contrastive_labels = torch.arange(img.shape[0]).to(pred)
+        contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
+        loss = self.loss(pred, label) + contrastive_loss
         
         self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         output = {'pred':pred,'label':label}
