@@ -4,7 +4,7 @@ import torch
 import tqdm
 import pandas as pd
 import glob 
-
+import cv2
 
 class BreastDataset(torch.utils.data.Dataset):
     """Pytorch dataset api for loading patches and preprocessed clinical data of breast."""
