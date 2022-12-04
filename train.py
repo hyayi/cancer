@@ -45,7 +45,7 @@ def train(config):
 
     model = MRSClassfication(learning_rate = config.learning_rate,model_name = config.model_name)
     
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{config.weight_path}/", save_top_k=1, monitor="val_f1",filename=f'{config.model_name}'+'-{epoch:02d}-{val_f1:.3f}',mode='max')
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{config.weight_path}/", save_top_k=1, monitor="val_f1",filename=f'{config.model_name}'+'-{epoch:02d}-{val_f1:.3f}',mode='max',save_last=True)
     
     callbacks = [checkpoint_callback]
     
