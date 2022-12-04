@@ -25,7 +25,7 @@ class MRSClassfication(pl.LightningModule):
         
         sim = einsum('i d, j d -> i j', tabular_em, img_em)
         sim = sim * self.temperature.exp()
-        contrastive_labels = torch.arange(img.shape[0]).to(pred)
+        contrastive_labels = torch.arange(img.shape[0],dtype=torch.int).to(label)
         contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
         loss = self.loss(pred, label) + contrastive_loss
         
@@ -48,7 +48,7 @@ class MRSClassfication(pl.LightningModule):
         
         sim = einsum('i d, j d -> i j', tabular_em, img_em)
         sim = sim * self.temperature.exp()
-        contrastive_labels = torch.arange(img.shape[0]).to(label)
+        contrastive_labels = torch.arange(img.shape[0],dtype=torch.int).to(label)
         contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
         loss = self.loss(pred, label) + contrastive_loss
         
