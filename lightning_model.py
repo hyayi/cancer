@@ -41,6 +41,7 @@ class BreastClassfication(pl.LightningModule):
         
         loss = self.loss(pred, batch['label'])
         
+        
         self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         output = {'pred':pred,'label':batch['label']}
 
@@ -53,7 +54,8 @@ class BreastClassfication(pl.LightningModule):
             
         preds = torch.cat([x['pred'] for x in outputs])
         labels = torch.cat([x['label'] for x in outputs])
-
+        print(preds.shape)
+        print(labels.shape)
         f1_macro = multiclass_f1_score(preds,labels,num_classes=2)
         self.log("val_f1", f1_macro, prog_bar=True, logger=True,rank_zero_only=True,on_epoch=True)
         
