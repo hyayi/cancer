@@ -16,4 +16,4 @@ def get_transforms() :
                                 ToTensorV2()
                                 ])
     
-    return train_transforms, 
+    return train_transforms, test_transforms
