@@ -1,0 +1,6 @@
+pandas
+scikit-learn
+pytorch-lightning
+torchmetrics
+albumentations
+torchvision==0.14
