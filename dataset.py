@@ -54,7 +54,8 @@ class BreastDataset(torch.utils.data.Dataset):
 
         patch_tensor_list = []
         for p_path in patch_paths:
-            patch = Image.open(p_path).convert("RGB")
+            patch = cv2.imread(p_path)
+            patch = cv2.cvtColor(patch, cv2.COLOR_BGR2RGB)
             patch_tensor = self.transforms(patch)  # [C, H, W]
             patch_tensor = torch.unsqueeze(patch_tensor, dim=0)  # [1, C, H, W]
             patch_tensor_list.append(patch_tensor)
