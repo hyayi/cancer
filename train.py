@@ -56,12 +56,12 @@ if __name__=="__main__" :
     print('start')
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--train_path", type=str, default='./data/train.csv')
-    parser.add_argument("--val_path", type=str, default='./data/val.csv')
-    parser.add_argument("--data_dir_path", type=str, default='./data/train')
+    parser.add_argument("--train_path", type=str, default='./data_patch/train.csv')
+    parser.add_argument("--val_path", type=str, default='./data_patch/val.csv')
+    parser.add_argument("--data_dir_path", type=str, default='./data_patch/train')
     parser.add_argument("--weight_path", type=str, default='./')
     parser.add_argument("--log_path", type=str, default='./')
-    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment1.yaml')
+    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment2.yaml')
     parser.add_argument("--model_name", type=str, default='experiment1')
     
     parser.add_argument("--num_workers",type=int, default=4)

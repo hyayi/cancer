@@ -12,8 +12,8 @@ class ResNet50(torch.nn.Module):
         del self.model
     
     def forward(self, x):
-        patch_features = self.extractor(x)
-        return patch_features
+        patch_features = self.extractor(x) 
+        return patch_features 
         
 
         

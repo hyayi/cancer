@@ -1,0 +1,13 @@
+backbone_name : "ResNet50"
+backbone_params :
+  pretrained : True
+
+
+aggregator_name : "TrnasoformerAggregator"
+aggregator_params :
+  nhead : 4 
+  num_layers : 4
+
+classifyr_name : "BaseClassify"
+classify_params :
+    num_classes : 2

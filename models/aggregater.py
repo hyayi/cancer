@@ -2,6 +2,28 @@ import torch
 from torch import nn
 
 
+class TrnasoformerAggregator(nn.Module):
+    """Aggregate features with computed attention value."""
+
+    def __init__(self, input_size, nhead, num_layers):
+        super().__init__()
+
+        self.input_size = input_size  # size of flatten feature
+        self.output_size = input_size
+        self.nhead = nhead
+        self.num_layers = num_layers
+        
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.input_size, nhead=self.nhead)
+        self.transformer_encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=self.num_layers)
+        self.cls_token = nn.Parameter(torch.randn(1,1, self.input_size))
+
+    def forward(self, x):
+        x = x.view(1,-1,self.input_size)  # flatten feature，[1,N,C * H * W]
+        x = torch.cat([self.cls_token, x], dim=1)  # [1, N+1, C * H * W]
+        x = self.transformer_encoder(x)  # [1, N+1, C * H * W]
+        return x[:, 0]  # [1, C * H * W] cls_token
+    
+
 class AttentionAggregator(nn.Module):
     """Aggregate features with computed attention value."""
 
