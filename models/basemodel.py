@@ -49,4 +49,4 @@ class ClassificationModel(nn.Module):
         tabular_feature = self.tabular_feature_extractor(tabular)
         feature = torch.cat([img_feature, tabular_feature], dim=-1)
         output = self.classifier(feature)
-        return output
+        return output ,img_feature,tabular_feature
