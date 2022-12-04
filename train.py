@@ -11,6 +11,7 @@ from dataset import BreastDataset
 import pytorch_lightning as pl
 import argparse
 import yaml
+from transforms import get_transforms
 
 warnings.filterwarnings(action='ignore') 
 
@@ -26,13 +27,16 @@ def seed_everything(seed):
 seed_everything(41)
 
 def train(config):
+    
+    train_transforms, test_transforms = get_transforms()
+    
 
-    train_dataset = BreastDataset(config.train_path, config.data_dir_path,is_preloading=False)
+    train_dataset = BreastDataset(config.train_path, config.data_dir_path,is_preloading=False,transforms=train_transforms)
     train_loader = DataLoader(train_dataset, batch_size = 1, shuffle=True, num_workers=config.num_workers,pin_memory=config.pin_memory)
     
     print(len(train_dataset))
 
-    val_dataset = BreastDataset(config.val_path, config.data_dir_path,is_preloading=False)
+    val_dataset = BreastDataset(config.val_path, config.data_dir_path,is_preloading=False,transforms=test_transforms)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=config.num_workers,pin_memory=config.pin_memory)
     
     with open(config.model_config_path) as f:

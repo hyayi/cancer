@@ -1,29 +1,19 @@
 import os
 from PIL import Image
 import torch
-import torchvision
 import tqdm
 import pandas as pd
 import glob 
-
-transform = torchvision.transforms.Compose(
-    [
-        torchvision.transforms.Resize((224,224)),  # resize to 224*224
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),  # normalization
-    ]
-)
-to_tensor = torchvision.transforms.ToTensor()
-Image.MAX_IMAGE_PIXELS = None
 
 
 class BreastDataset(torch.utils.data.Dataset):
     """Pytorch dataset api for loading patches and preprocessed clinical data of breast."""
 
-    def __init__(self, csv_path, data_dir_path='./dataset', is_preloading=True):
+    def __init__(self, csv_path, data_dir_path='./dataset', is_preloading=True,transforms=None):
         self.data_dir_path = data_dir_path
         self.is_preloading = is_preloading
         self.csv_data=pd.read_csv(csv_path)
+        self.transforms=transforms
 
         if self.is_preloading:
             self.bag_tensor_list = self.preload_bag_data()
@@ -65,7 +55,7 @@ class BreastDataset(torch.utils.data.Dataset):
         patch_tensor_list = []
         for p_path in patch_paths:
             patch = Image.open(p_path).convert("RGB")
-            patch_tensor = transform(patch)  # [C, H, W]
+            patch_tensor = self.transforms(patch)  # [C, H, W]
             patch_tensor = torch.unsqueeze(patch_tensor, dim=0)  # [1, C, H, W]
             patch_tensor_list.append(patch_tensor)
 
