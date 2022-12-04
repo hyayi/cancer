@@ -32,8 +32,8 @@ class BreastClassfication(pl.LightningModule):
        if self.trainer.num_devices > 1:
            outputs = self.all_gather(outputs)
             
-       preds = torch.cat([x['pred'] for x in outputs]).veiw(-1,2)
-       labels = torch.cat([x['label'] for x in outputs]).veiw(-1)
+       preds = torch.cat([x['pred'] for x in outputs]).view(-1,2)
+       labels = torch.cat([x['label'] for x in outputs]).view(-1)
        
        f1_macro = multiclass_f1_score(preds,labels,num_classes=2)
        self.log("train_f1", f1_macro,prog_bar=True, logger=True, sync_dist=True)
@@ -54,8 +54,8 @@ class BreastClassfication(pl.LightningModule):
         if self.trainer.num_devices > 1:
             outputs = self.all_gather(outputs)
             
-        preds = torch.cat([x['pred'] for x in outputs]).veiw(-1,2)
-        labels = torch.cat([x['label'] for x in outputs]).veiw(-1)
+        preds = torch.cat([x['pred'] for x in outputs]).view(-1,2)
+        labels = torch.cat([x['label'] for x in outputs]).view(-1)
 
         f1_macro = multiclass_f1_score(preds,labels,num_classes=2)
         self.log("val_f1", f1_macro, prog_bar=True, logger=True,rank_zero_only=True,on_epoch=True)
