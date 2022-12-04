@@ -67,8 +67,8 @@ if __name__=="__main__" :
     parser.add_argument("--model_name", type=str, default='eb7')
     parser.add_argument("--save_path", type=str, default='./')
     
-    parser.add_argument("--img_h", type=str, default=1024)
-    parser.add_argument("--img_w", type=str, default=2048)
+    parser.add_argument("--img_h", type=str, default=512)
+    parser.add_argument("--img_w", type=str, default=512)
     
     parser.add_argument("--batch_size",type=int, default=4)
     parser.add_argument("--num_workers",type=int, default=4)
