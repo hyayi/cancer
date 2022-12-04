@@ -34,7 +34,7 @@ class MRSClassfication(pl.LightningModule):
        labels = torch.cat([x['label'] for x in outputs]).view(-1)
        
        f1_macro = multiclass_f1_score(preds,labels,num_classes=2)
-       self.log("train_f1", f1_macro,prog_bar=True, logger=True, sync_dist=True)
+       self.log("train_f1", f1_macro,prog_bar=True, logger=True)
 
     def validation_step(self, batch, batch_idx):
         img, tabular, label= batch
@@ -56,7 +56,7 @@ class MRSClassfication(pl.LightningModule):
         labels = torch.cat([x['label'] for x in outputs]).view(-1)
 
         f1_macro = multiclass_f1_score(preds,labels,num_classes=2)
-        self.log("val_f1", f1_macro, prog_bar=True, logger=True,rank_zero_only=True,on_epoch=True)
+        self.log("val_f1", f1_macro, prog_bar=True, logger=True,on_epoch=True)
         
         
     def configure_optimizers(self):
