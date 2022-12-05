@@ -27,7 +27,7 @@ class TrnasoformerAggregator(nn.Module):
 class AttentionAggregator(nn.Module):
     """Aggregate features with computed attention value."""
 
-    def __init__(self, input_size, inner_feature_size=128, output_size=256):
+    def __init__(self, input_size, inner_feature_size=256, output_size=512):
         super().__init__()
 
         self.in_features_size = input_size  # size of flatten feature

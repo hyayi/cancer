@@ -5,13 +5,15 @@ import os
 import torch
 
 from torch.utils.data import  DataLoader
-from lightning_model import BreastClassfication
+import lightning_model 
 import warnings
-from dataset import BreastDataset
+import dataset 
 import pytorch_lightning as pl
 import argparse
 import yaml
 from transforms import get_transforms
+import pandas as pd 
+from preprocessing import preprocessing
 
 warnings.filterwarnings(action='ignore') 
 
@@ -27,22 +29,20 @@ def seed_everything(seed):
 seed_everything(41)
 
 def train(config):
-    
-    train_transforms, test_transforms = get_transforms()
-    
-
-    train_dataset = BreastDataset(config.train_path, config.data_dir_path,is_preloading=False,transforms=train_transforms)
-    train_loader = DataLoader(train_dataset, batch_size = 1, shuffle=True, num_workers=config.num_workers,pin_memory=config.pin_memory)
-    
-    print(len(train_dataset))
-
-    val_dataset = BreastDataset(config.val_path, config.data_dir_path,is_preloading=False,transforms=test_transforms)
-    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=config.num_workers,pin_memory=config.pin_memory)
-    
     with open(config.model_config_path) as f:
         model_config = yaml.load(f, Loader=yaml.FullLoader)
         
-    model = BreastClassfication(learning_rate = config.learning_rate,model_config = model_config)
+    train_transforms, test_transforms = get_transforms()
+    
+    train_df, val_df = preprocessing(config.train_path,config.val_path)
+    
+    train_dataset = getattr(dataset, model_config['dataset_name'])(train_df, config.data_dir_path,transforms=train_transforms)
+    train_loader = DataLoader(train_dataset, batch_size = 1, shuffle=True, num_workers=config.num_workers,pin_memory=config.pin_memory)
+
+    val_dataset = getattr(dataset, model_config['dataset_name'])(val_df, config.data_dir_path,transforms=test_transforms)
+    val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=config.num_workers,pin_memory=config.pin_memory)
+        
+    model = getattr(lightning_model, model_config['model_name'])(learning_rate = config.learning_rate,model_config = model_config)
     
     checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{config.weight_path}/", save_top_k=1, monitor="val_f1",filename=f'{config.model_name}'+'-{epoch:02d}-{val_f1:.3f}',mode='max')
     callbacks = [checkpoint_callback]
@@ -65,8 +65,8 @@ if __name__=="__main__" :
     parser.add_argument("--data_dir_path", type=str, default='./data_patch/train')
     parser.add_argument("--weight_path", type=str, default='./')
     parser.add_argument("--log_path", type=str, default='./')
-    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment2.yaml')
-    parser.add_argument("--model_name", type=str, default='experiment1')
+    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment3.yaml')
+    parser.add_argument("--model_name", type=str, default='experiment3')
     
     parser.add_argument("--num_workers",type=int, default=4)
     parser.add_argument("--pin_memory",type=bool, default=False)
