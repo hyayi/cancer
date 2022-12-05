@@ -65,8 +65,8 @@ if __name__=="__main__" :
     parser.add_argument("--data_dir_path", type=str, default='./data_patch/train')
     parser.add_argument("--weight_path", type=str, default='./')
     parser.add_argument("--log_path", type=str, default='./')
-    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment3.yaml')
-    parser.add_argument("--model_name", type=str, default='experiment3')
+    parser.add_argument("--model_config_path", type=str, default='./model_config/experiment4.yaml')
+    parser.add_argument("--model_name", type=str, default='experiment4')
     
     parser.add_argument("--num_workers",type=int, default=4)
     parser.add_argument("--pin_memory",type=bool, default=False)

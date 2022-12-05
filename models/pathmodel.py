@@ -27,7 +27,7 @@ class MILNetMultimodal(nn.Module):
 
     def __init__(self,model_config):
         super().__init__()
-
+        self.contrastive_loss = model_config['contrastive_loss']
         self.image_feature_extractor = getattr(backbone, model_config['backbone_name'])(**model_config['backbone_params'])
         self.aggregator = getattr(aggregater, model_config['aggregator_name'])(input_size = self.image_feature_extractor.output_size, **model_config['aggregator_params'])
         self.clinical_feature_extractor = getattr(tabular, model_config['clinical_feature_extractor_name'])(**model_config['clinical_feature_extractor_params'])
@@ -40,4 +40,8 @@ class MILNetMultimodal(nn.Module):
         clinical_features = self.clinical_feature_extractor(tabular_data)
         total_featrues = torch.cat([aggregated_feature, clinical_features], dim=1)
         result = self.classifier(total_featrues)
-        return result
+        
+        if self.contrastive_loss:
+            return result, aggregated_feature, clinical_features
+        else:
+            return result

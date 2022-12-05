@@ -1,7 +1,7 @@
-model_name : BreastClassficationMulti
+model_name : BreastClassficationMultiCon
 dataset_name : BreastDatasetMulti
 
-contrastive_loss : False
+contrastive_loss : True
 
 
 backbone_name : "ResNet50"
