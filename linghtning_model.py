@@ -27,7 +27,7 @@ class MRSClassfication(pl.LightningModule):
         sim = sim * self.temperature.exp()
         contrastive_labels = torch.arange(img.shape[0],dtype=torch.int).to(label)
         contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
-        loss = 0.7*self.loss(pred, label) + 0.3*contrastive_loss
+        loss = self.loss(pred, label) + contrastive_loss
         
         self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         output = {'loss':loss,'pred':pred,'label':label}
@@ -50,7 +50,7 @@ class MRSClassfication(pl.LightningModule):
         sim = sim * self.temperature.exp()
         contrastive_labels = torch.arange(img.shape[0],dtype=torch.int).to(label)
         contrastive_loss = (self.loss(sim, contrastive_labels) + self.loss(sim.t(), contrastive_labels)) * 0.5
-        loss = 0.7*self.loss(pred, label) + 0.3*contrastive_loss
+        loss = self.loss(pred, label) + contrastive_loss
         
         self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         output = {'pred':pred,'label':label}
