@@ -1,4 +1,4 @@
-from sklearn.preprocessing import LabelEncoder,QuantileTransformer
+from sklearn.preprocessing import LabelEncoder,QuantileTransformer,StandardScaler
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
