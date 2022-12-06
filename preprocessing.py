@@ -24,7 +24,7 @@ def preprocessing(train_path,test_path):
         elif col in numeric_cols:
             scaler = StandardScaler()
             train_df[col] = scaler.fit_transform(get_values(train_df[col]))
-            val_df[col] = scaler.transform(get_values(val_df[col]))
+            test_df[col] = scaler.transform(get_values(val_df[col]))
             
         elif col in none_scale_cols:
             continue
