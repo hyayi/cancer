@@ -11,10 +11,10 @@ def preprocessing(train_path,test_path):
     train_df = pd.read_csv(train_path)
     test_df = pd.read_csv(test_path)
     
-    numeric_cols = ['나이', '암의 장경', 'KI-67_LI_percent', '암의 개수','NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3','T_category']
+    numeric_cols = ['나이', '암의 장경', 'KI-67_LI_percent', '암의 개수','NG', 'HG', 'HG_score_1', 'HG_score_2', 'HG_score_3']
     ignore_cols = ['ID', 'img_path', 'mask_path', '수술연월일', 'N_category']
     none_scale_cols = ['ER','PR','HER2','DCIS_or_LCIS_여부']
-    categorical_cols = ['진단명', '암의 위치','BRCA_mutation']
+    categorical_cols = ['진단명', '암의 위치','BRCA_mutation','T_category']
 
     for col in train_df.columns:
         
@@ -22,10 +22,9 @@ def preprocessing(train_path,test_path):
             continue
         
         elif col in numeric_cols:
-            scaler = QuantileTransformer(output_distribution = 'normal')
-            scaler.fit(get_values(train_df[col]))
-            train_df[col] = scaler.transform(get_values(train_df[col]))
-            test_df[col] = scaler.transform(get_values(test_df[col]))
+            scaler = StandardScaler()
+            train_df[col] = scaler.fit_transform(get_values(train_df[col]))
+            val_df[col] = scaler.transform(get_values(val_df[col]))
             
         elif col in none_scale_cols:
             continue
